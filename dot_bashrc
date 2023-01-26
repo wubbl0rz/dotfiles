@@ -1,0 +1,41 @@
+#
+# ~/.bashrc
+#
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+function imgcat()
+{
+  IFS=$'\n'; for i in $(find $1 -type f -exec file --mime-type {} \+ | awk -F: '{if ($2 ~/image\//) print $1}'); do
+    if echo "$i" | grep -e ".svg$"; then
+      ffmpeg -i "$i" -vf scale=640:-1 -f image2pipe -vcodec png - 2> /dev/null | wezterm imgcat
+    else
+      wezterm imgcat --width 30% "$i"; echo -e "$i\n==============================================="; 
+    fi
+  done
+}
+
+alias ls='ls --color=auto'
+PS1='[\u@\h \W]\$ '
+
+eval "$(starship init bash)"
+#eval "$(oh-my-posh init bash  --config 'https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/cert.omp.json')"
+
+#alias imgcat="wezterm imgcat --width 30%"
+alias eW="vim ~/.config/wezterm/wezterm.lua"
+alias eI="vim ~/.config/i3/config"
+alias eV="vim ~/.vimrc"
+alias eB="vim ~/.bashrc"
+alias wetter="curl http://v3.wttr.in/Hessen.sxl; sleep 5; curl http://v1.wttr.in/Hanau"
+
+
+export PATH=$PATH:$HOME/.local/bin:$HOME/repos/scripts
+
+if command -v exa >/dev/null; then
+  alias ls='exa-wrapper.sh'
+else
+  alias ls='/bin/ls $LS_OPTIONS'
+fi
+
+cd ~

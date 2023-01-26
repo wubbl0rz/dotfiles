@@ -1,0 +1,121 @@
+autoload -U promptinit; promptinit; 
+
+autoload -U compinit
+compinit
+zstyle ':completion:*' menu yes select
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*' rehash true
+
+autoload -U select-word-style
+select-word-style bash
+
+setopt auto_cd
+setopt HIST_IGNORE_SPACE
+setopt interactive_comments
+setopt inc_append_history
+setopt share_history
+setopt AUTO_PUSHD          
+setopt PUSHD_IGNORE_DUPS    
+setopt PUSHD_SILENT         
+
+for index ({1..9}) alias "$index"="cd +${index}"; unset index
+
+HISTFILE=~/.zsh_history
+HISTSIZE=10000000
+SAVEHIST=10000000
+
+bindkey "^[[H" beginning-of-line # HOME
+bindkey "^[[F" end-of-line # END
+bindkey "^[[3~" delete-char # DEL
+bindkey -M emacs '\e#' pound-insert # ALT+#
+bindkey '^R' history-incremental-pattern-search-backward
+
+mem() {
+  echo $(echo $(smem -t -P $1 | tail -n 1 | rev | cut -d ' ' -f 2 | rev) / 1024 | bc) MB
+}
+
+alias eZ="vim ~/.zshrc"
+alias eI="vim ~/.config/i3/config"
+alias eW="vim ~/.config/wezterm/wezterm.lua"
+alias eI="vim ~/.config/i3/config"
+alias eV="vim ~/.vimrc"
+alias eS="vim ~/.config/starship.toml"
+alias wetter="curl http://v3.wttr.in/Hessen.sxl; sleep 5; curl http://v1.wttr.in/Hanau"
+alias history="history 0"
+alias etcher="usbimager"
+alias ls='ls --color=auto'
+alias s='the-way search'
+
+function deepl
+{
+  args="$*"
+  echo "$args"
+  echo "$args" | command deepl -s --to en
+}
+
+alias deepl="noglob deepl"
+
+function rm
+{
+  /bin/rm $@ -I
+}
+
+function ask
+{
+  args="$*"
+  ai ask "$args"
+}
+
+alias ask="noglob ask"
+alias chatgpt="noglob chatgpt --"
+alias history="history | fzf"
+
+function imgcat()
+{
+  local CNT=0
+  local IFS=$'\n'
+  local posY=$(($(echo -e "cols" | tput -S) / 2))
+  local posX=$(($(echo -e "lines" | tput -S) / 4))
+
+  for i in $(find $1 -type f -exec file --mime-type {} \+ | awk -F: '{if ($2 ~/image\//) print $1}'); do
+    CNT=$((CNT+1))
+    if test $(($CNT % 2)) -eq 0 && test "$2" != "-1"; then
+      printf "\033[${posX}A"
+      printf "\033[${posY}C"
+      echo -e "==== $(basename $i) ===="
+      printf "\033[${posY}C"
+    else
+      echo -e "==== $(basename $i) ===="
+    fi
+
+    if echo "$i" | grep -e ".svg$" &> /dev/null; then
+      ffmpeg -i "$i" -vf scale=640:-1 -f image2pipe -vcodec png - 2> /dev/null | wezterm imgcat --height 20%
+    else
+      wezterm imgcat --height 20% "$i";
+    fi
+  done
+}
+
+function cmdsave() {
+  PREV=$(fc -lrn | head -n 1)
+  sh -c "the-way cmd `printf %q "$PREV"`"
+}
+
+function cmdsearch() {
+  BUFFER=$(the-way search --stdout --languages="sh")
+  print -z $BUFFER
+}
+
+export PATH="$PATH:$HOME/.local/bin:$HOME/repos/scripts/helper"
+export PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts"
+export PNPM_HOME="/home/max/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/fzf/key-bindings.zsh
+
+export EDITOR="vim"
+
+eval "$(starship init zsh)"
+

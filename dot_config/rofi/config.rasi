@@ -1,0 +1,30 @@
+configuration{
+    modes: "drun,run,window,emoji:rofimoji,clip:greenclip print,shortcuts:~/repos/scripts/rofishortcut.sh";
+    kb-move-char-forward: "";
+    kb-move-char-back: "";
+    kb-mode-next: "Right,Super_L+Right";
+    kb-mode-previous: "Left,Super_L+Left";
+    icon-theme: "Adwaita";
+    font: "Inter Medium 16";
+    show-icons: true;
+    terminal: "wezterm start";
+    drun-display-format: "{icon} {name}";
+    location: 0;
+    disable-history: false;
+    hide-scrollbar: true;
+    display-drun: " Apps ";
+    display-run: " Run";
+    display-emoji: " Emoji";
+    display-window: " Window";
+    display-clip: " Clip";
+    display-shortcuts: " Scripts";
+    sidebar-mode: true;
+    drun {
+      fallback-icon: "/usr/share/icons/Adwaita/512x512/mimetypes/application-x-executable.png";
+    }
+//    run {
+//      fallback-icon: "/usr/share/icons/Adwaita/512x512/devices/computer.png";
+//    }
+}
+
+@theme "/home/max/.local/share/rofi/themes/base16-tomorrow-night.rasi"

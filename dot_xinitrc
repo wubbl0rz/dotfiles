@@ -1,0 +1,23 @@
+# delay exec after i3 start
+sleep 2 && { 
+ sleep 1
+ vmware-user &
+ jetbrains-toolbox --minimize &
+ feh --bg-fill ~/Downloads/widebg.jpg &
+ flameshot &
+ nm-applet &
+ picom &
+ greenclip daemon &
+# ulauncher --hide-window &
+ MESA_GL_VERSION_OVERRIDE=3.1COMPAT joplin-desktop &
+ /usr/lib/xfce4/notifyd/xfce4-notifyd &
+} &
+
+xset r rate 300 40
+setxkbmap -option caps:none
+
+# start i3
+
+xrdb <(echo "Xcursor.size: 24")
+
+exec i3

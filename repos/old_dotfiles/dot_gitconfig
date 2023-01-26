@@ -1,0 +1,29 @@
+[user]
+	email = wubbl0rz
+	name = wubbl0rz
+[color]
+        ui = true
+[alias]
+	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+	ls = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+	filelog = log -u
+	follow = log --follow
+	cob = checkout -b
+	co = checkout
+	cp = cherry-pick
+	graph = "log --oneline --decorate --all --graph --simplify-by-decoration"
+	graph2 = "log --graph --oneline --decorate"
+	c = commit -m
+	who = shortlog -n -s --no-merges
+	cleanup = !git remote prune origin && git gc && git clean -dfx && git stash clear
+[help]
+        autocorrect = 10
+[core]
+        editor = vim
+[mergetool]
+        keepBackup = false
+[push]
+        default = simple
+[rerere]
+        enabled = false
+
