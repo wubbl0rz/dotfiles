@@ -29,7 +29,6 @@ alias eV="vim ~/.vimrc"
 alias eB="vim ~/.bashrc"
 alias wetter="curl http://v3.wttr.in/Hessen.sxl; sleep 5; curl http://v1.wttr.in/Hanau"
 
-
 export PATH=$PATH:$HOME/.local/bin:$HOME/repos/scripts
 
 if command -v exa >/dev/null; then
@@ -39,3 +38,5 @@ else
 fi
 
 cd ~
+
+complete -C /usr/bin/terraform terraform

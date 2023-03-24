@@ -1,7 +1,7 @@
 autoload -U promptinit; promptinit; 
-
-autoload -U compinit
+autoload -U compinit bashcompinit
 compinit
+bashcompinit
 zstyle ':completion:*' menu yes select
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*' rehash true
@@ -18,17 +18,30 @@ setopt AUTO_PUSHD
 setopt PUSHD_IGNORE_DUPS    
 setopt PUSHD_SILENT         
 
+if [[ -t 0 && $- = *i* ]]
+then
+    stty -ixon
+fi 
+
+unset histchars
+
 for index ({1..9}) alias "$index"="cd +${index}"; unset index
 
 HISTFILE=~/.zsh_history
 HISTSIZE=10000000
 SAVEHIST=10000000
 
+bindkey '^[.' insert-last-word
 bindkey "^[[H" beginning-of-line # HOME
 bindkey "^[[F" end-of-line # END
+bindkey "^[OH" beginning-of-line # HOME
+bindkey "^[OF" end-of-line # END
 bindkey "^[[3~" delete-char # DEL
 bindkey -M emacs '\e#' pound-insert # ALT+#
 bindkey '^R' history-incremental-pattern-search-backward
+bindkey '^S' history-incremental-pattern-search-forward
+bindkey '^[[1;3C' forward-word
+bindkey '^[[1;3D' backward-word
 
 mem() {
   echo $(echo $(smem -t -P $1 | tail -n 1 | rev | cut -d ' ' -f 2 | rev) / 1024 | bc) MB
@@ -66,9 +79,10 @@ function ask
   ai ask "$args"
 }
 
+alias k="kubectl"
 alias ask="noglob ask"
 alias chatgpt="noglob chatgpt --"
-alias history="history | fzf"
+alias serve="python -m http.server 8000"
 
 function imgcat()
 {
@@ -106,16 +120,31 @@ function cmdsearch() {
   print -z $BUFFER
 }
 
-export PATH="$PATH:$HOME/.local/bin:$HOME/repos/scripts/helper"
+export PNPM_HOME="$HOME/.local/share/pnpm"
+export PATH="$PATH:$HOME/.local/bin"
+export PATH="$PATH:$HOME/repos/scripts/helper"
 export PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts"
-export PNPM_HOME="/home/max/.local/share/pnpm"
 export PATH="$PNPM_HOME:$PATH"
+export PATH="${PATH}:${HOME}/.krew/bin"
 
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS=( end-of-line )
+ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=( end-of-line )
+
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /usr/share/fzf/key-bindings.zsh
+#source /usr/share/fzf/key-bindings.zsh
+source <(kubectl completion zsh)
+source <(VmChamp --completion zsh)
+complete -o nospace -C /usr/bin/terraform terraform
 
 export EDITOR="vim"
+export PROMPT_EOL_MARK=""
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f "/home/max/Downloads/gcloud/google-cloud-sdk/path.zsh.inc" ]; then . '/home/max/Downloads/gcloud/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/max/Downloads/gcloud/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/max/Downloads/gcloud/google-cloud-sdk/completion.zsh.inc'; fi
 
 eval "$(starship init zsh)"
 

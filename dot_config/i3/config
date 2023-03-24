@@ -84,11 +84,13 @@ bar {
   font pango:MesloLGM Nerd Font Bold 13
   position top
   tray_output primary
-  status_command bumblebee-status -m shell indicator load memory disk cpu datetime alert \
+  status_command bumblebee-status -m alert shell indicator memory disk load cpu2 datetime \
       -p interval="0.5" \
-      -p cpu.interval="1" \
-      -p memory.format='{used}' \
+      -p cpu2.interval="1" \
+      -p cpu2.layout="cpu2.coresload" \
+      -p memory.format='{percent:05.02f}%' \
       -p disk.format='{left}' \
+      -p disk.open='' \
       -p shell.command="ps axf | grep '[g]reenclip daemon' | grep -o T &> /dev/null && echo '󱘝' || echo '󰅌'" \
       -p indicator.include="NumLock" \
       -p datetime.format="%a %d.%m %H:%M" \

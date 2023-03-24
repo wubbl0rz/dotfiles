@@ -32,6 +32,7 @@ do
 end
 
 return {
+  disable_default_key_bindings = true,
   pane_focus_follows_mouse = false,
   mouse_bindings = mb,
 --  leader = { key = 'VoidSymbol', timeout_milliseconds = 1000 },
@@ -44,6 +45,26 @@ return {
 --        cwd = '~'
 --      },
 --    },
+    {
+      key = 'PageUp',
+      mods = 'SHIFT',
+      action = act.ScrollByPage(-1),
+    },
+    {
+      key = 'PageDown',
+      mods = 'SHIFT',
+      action = act.ScrollByPage(1),
+    },
+    {
+      key = 'v',
+      mods = 'CTRL|SHIFT',
+      action = act.PasteFrom("Clipboard"),
+    },
+    {
+      key = 'c',
+      mods = 'CTRL|SHIFT',
+      action = act.CopyTo("Clipboard"),
+    },
     {
       key = 't',
       mods = 'CTRL|SHIFT',

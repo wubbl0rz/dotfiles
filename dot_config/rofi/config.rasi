@@ -4,7 +4,7 @@ configuration{
     kb-move-char-back: "";
     kb-mode-next: "Right,Super_L+Right";
     kb-mode-previous: "Left,Super_L+Left";
-    icon-theme: "Adwaita";
+    icon-theme: "Flat-Remix-Blue-Dark";
     font: "Inter Medium 16";
     show-icons: true;
     terminal: "wezterm start";
