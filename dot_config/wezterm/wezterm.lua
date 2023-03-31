@@ -51,6 +51,11 @@ return {
       action = act.ScrollByPage(-1),
     },
     {
+      key = 'x',
+      mods = 'CTRL',
+      action = wezterm.action.CloseCurrentPane { confirm = true },
+    },
+    {
       key = 'PageDown',
       mods = 'SHIFT',
       action = act.ScrollByPage(1),
