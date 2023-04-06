@@ -59,29 +59,12 @@ alias etcher="usbimager"
 alias ls='ls --color=auto'
 alias s='the-way search'
 
-function deepl
-{
-  args="$*"
-  echo "$args"
-  echo "$args" | command deepl -s --to en
-}
-
-alias deepl="noglob deepl"
-
 function rm
 {
   /bin/rm $@ -I
 }
 
-function ask
-{
-  args="$*"
-  ai ask "$args"
-}
-
 alias k="kubectl"
-alias ask="noglob ask"
-alias chatgpt="noglob chatgpt --"
 alias serve="python -m http.server 8000"
 
 function imgcat()
@@ -110,14 +93,10 @@ function imgcat()
   done
 }
 
-function cmdsave() {
-  PREV=$(fc -lrn | head -n 1)
-  sh -c "the-way cmd `printf %q "$PREV"`"
-}
-
-function cmdsearch() {
-  BUFFER=$(the-way search --stdout --languages="sh")
-  print -z $BUFFER
+function fixvmware() {
+  sudo systemctl restart docker
+  virsh --connect qemu:///system net-destroy default
+  virsh --connect qemu:///system net-start --network default
 }
 
 export PNPM_HOME="$HOME/.local/share/pnpm"
