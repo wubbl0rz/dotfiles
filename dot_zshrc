@@ -57,7 +57,6 @@ alias wetter="curl http://v3.wttr.in/Hessen.sxl; sleep 5; curl http://v1.wttr.in
 alias history="history 0"
 alias etcher="usbimager"
 alias ls='ls --color=auto'
-alias s='the-way search'
 
 function rm
 {
